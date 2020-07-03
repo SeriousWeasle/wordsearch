@@ -60,10 +60,13 @@ def isAllowed(w):
                 return False
 
     return True
-
+searchTime = 0
 for l in allowed_letters:
     wordlist_url = wordlist_url_base + l
+    sst = time.time()
     wordlist_page = requests.get(wordlist_url)
+    est = time.time()
+    searchTime += (est - sst)
     tree_page_wordlist = html.fromstring(wordlist_page.content)
     tree_page_words = tree_page_wordlist.xpath("//a/text()")
     current_words = []
@@ -75,4 +78,4 @@ for l in allowed_letters:
 
 et = time.time()
 
-print("Completed search in", round(et - st, 1), "seconds")
+print("Completed search in", round(et - st, 2), "seconds.\nWait time:", round(searchTime, 2), "seconds\nSearch time:", round(et-st-searchTime,2), "seconds")
